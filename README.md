@@ -90,4 +90,3 @@ python train_GNN.py
 ---
 
 This concludes the steps for preparing, training, and testing the GNN model.
-```
