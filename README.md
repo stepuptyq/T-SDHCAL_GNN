@@ -57,19 +57,7 @@ GNN and DGCNN are two other potentially suitable solutions. But currently, only 
 
 ### Train
 
-Hardware and CUDA information:
-+-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 566.03                 Driver Version: 566.03         CUDA Version: 12.7     |
-|-----------------------------------------+------------------------+----------------------+
-| GPU  Name                  Driver-Model | Bus-Id          Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
-|                                         |                        |               MIG M. |
-|=========================================+========================+======================|
-|   0  NVIDIA GeForce RTX 4090 D    WDDM  |   00000000:01:00.0  On |                  Off |
-|  0%   25C    P8             21W /  425W |    3180MiB /  24564MiB |     30%      Default |
-|                                         |                        |                  N/A |
-+-----------------------------------------+------------------------+----------------------+
-
+CUDA Version: 12.7
 Torch version: 2.4.0
 
 Run 'train_GNN.py'.
