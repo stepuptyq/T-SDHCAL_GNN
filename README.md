@@ -58,6 +58,7 @@ GNN and DGCNN are two other potentially suitable solutions. But currently, only 
 ### Train
 
 CUDA Version: 12.7
+
 Torch version: 2.4.0
 
 Run 'train_GNN.py'.
