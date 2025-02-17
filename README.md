@@ -55,7 +55,7 @@ GNN and DGCNN are two other potentially suitable solutions. But currently, only 
     This step is very computationally intensive, but only needs to be done once. I can upload the result file to a cloud server for download if needed.
     After this step, the dataset should be 'dataset_train_directed.pt' and 'dataset_test_directed.pt', and we are ready for run.
 
-### Train
+### Train & test
 
 CUDA Version: 12.7
 
