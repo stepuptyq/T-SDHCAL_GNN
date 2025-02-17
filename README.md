@@ -17,7 +17,7 @@ GNN and DGCNN are two other potentially suitable solutions. But currently, only 
 ### Prepare the data
 Original data is 'PionxxGeV.root' with xx: 10, 20, 30, 40, 50.
 Use the following python code to transform root file into npz file:
-'''python
+```python
 import numpy as np  # Import NumPy library for numerical computations and array operations
 import uproot  # Import uproot library for reading ROOT file format data
 
@@ -43,5 +43,3 @@ for ind in index_energy:
 
     # Save the extracted keys and values as a .npz file format
     np.savez('pion' + ind + 'Gev', keys=keys, values=values)
-
-ds
