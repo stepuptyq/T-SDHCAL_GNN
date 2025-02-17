@@ -1,6 +1,6 @@
 import numpy as np
 
-# 读出代码：
+# reading npz file：
 def read_npz(file):
     loaded_data = np.load(f'data/pion{i * 10}Gev_GNN.npz', allow_pickle=True)
     load_data = {'data': loaded_data['data']}

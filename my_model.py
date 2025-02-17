@@ -131,35 +131,35 @@ class FullyConnectedModel_t(nn.Module):
 class GNNModel(nn.Module):
     def __init__(self):
         super(GNNModel, self).__init__()
-        # 图卷积层
-        self.conv1 = GCNConv(4, 32)  # 输入特征维度为 4（x, y, z, t），输出维度为 64
-        self.conv2 = GCNConv(32, 64)  # 第二层图卷积
-        # 全连接层
+        # Graph convolutional layers
+        self.conv1 = GCNConv(4, 32)  # Input feature dimension is 4 (x, y, z, t), output dimension is 32
+        self.conv2 = GCNConv(32, 64)  # Second graph convolution layer
+        # Fully connected layers
         self.fc1 = torch.nn.Linear(64, 32)
-        self.fc2 = torch.nn.Linear(32, 1)  # 最终输出为标量（粒子能量 R）
+        self.fc2 = torch.nn.Linear(32, 1)  # Final output is a scalar (particle energy R)
         
 
     def forward(self, data):
-        # 提取节点特征和边索引
-        x = data.x           # 所有图的节点特征矩阵，形状 [total_num_nodes, num_node_features]
-        edge_index = data.edge_index  # 所有图的边索引矩阵，形状 [2, total_num_edges]
-        batch = data.batch   # 每个节点所属图的索引，形状 [total_num_nodes]
+        # Extract node features and edge index
+        x = data.x           # Node feature matrix for all graphs, shape [total_num_nodes, num_node_features]
+        edge_index = data.edge_index  # Edge index matrix for all graphs, shape [2, total_num_edges]
+        batch = data.batch   # Index of the graph each node belongs to, shape [total_num_nodes]
 
-        # 如果有边特征，可以提取
+        # If there are edge features, they can be extracted
         edge_attr = data.edge_attr if 'edge_attr' in data else None
 
-        # 图卷积操作
+        # Graph convolution operation
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = self.conv2(x, edge_index)
 
-        # 全局池化操作（对每个图进行特征聚合）
-        x = global_mean_pool(x, batch)  # 聚合每个图的节点特征，形状 [num_graphs, hidden_dim]
+        # Global pooling operation (feature aggregation for each graph)
+        x = global_mean_pool(x, batch)  # Aggregate node features for each graph, shape [num_graphs, hidden_dim]
 
-        # 全连接层
+        # Fully connected layers
         x = self.fc1(x)
         x = F.relu(x)
-        x = self.fc2(x)  # 输出预测值
+        x = self.fc2(x)  # Output prediction
         return x
 
 class DGCNN(nn.Module):
@@ -225,51 +225,3 @@ class DGCNN(nn.Module):
         x = self.fc3(x)
 
         return x
-
-# class GNNModel(nn.Module):
-#     def __init__(self, max_input_length, num_gnn_layers=2):
-#         super(GNNModel, self).__init__()
-        
-#         # Embedding layers for inputs
-#         self.embedding1 = nn.Embedding(num_embeddings=dim_x, embedding_dim=embedding_dim1)
-#         self.embedding2 = nn.Embedding(num_embeddings=dim_y, embedding_dim=embedding_dim2)
-#         self.embedding3 = nn.Embedding(num_embeddings=dim_w, embedding_dim=embedding_dim3)
-        
-#         # Total embedding dimension
-#         self.total_embedding_dim = embedding_dim1 + embedding_dim2 + embedding_dim3
-        
-#         # GNN layers
-#         self.gnn_layers = nn.ModuleList()
-#         self.gnn_layers.append(GCNConv(self.total_embedding_dim, model_dim))
-#         for _ in range(num_gnn_layers - 1):
-#             self.gnn_layers.append(GCNConv(model_dim, model_dim))
-        
-#         # Fully connected output layer
-#         self.output_fc = nn.Linear(model_dim, 1)  # Regression output
-
-#     def forward(self, x1, x2, x3, edge_index, batch):
-#         """
-#         Args:
-#             x1, x2, x3: Input tensors for the three embeddings
-#             edge_index: Graph edge index (torch_geometric format)
-#             batch: Batch index tensor for global pooling
-#         """
-#         # Step 1: Embedding lookups
-#         emb1 = self.embedding1(x1)  # Shape: [num_nodes, embedding_dim1]
-#         emb2 = self.embedding2(x2)  # Shape: [num_nodes, embedding_dim2]
-#         emb3 = self.embedding3(x3)  # Shape: [num_nodes, embedding_dim3]
-        
-#         # Step 2: Concatenate embeddings along the last dimension
-#         x = torch.cat((emb1, emb2, emb3), dim=-1)  # Shape: [num_nodes, total_embedding_dim]
-        
-#         # Step 3: Pass through GNN layers
-#         for gnn_layer in self.gnn_layers:
-#             x = F.relu(gnn_layer(x, edge_index))  # Apply GCNConv and ReLU
-        
-#         # Step 4: Global pooling (mean pooling over nodes)
-#         x = global_mean_pool(x, batch)  # Shape: [batch_size, model_dim]
-        
-#         # Step 5: Fully connected layer for output
-#         x = self.output_fc(x)  # Shape: [batch_size, 1]
-        
-#         return x

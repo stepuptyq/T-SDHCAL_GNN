@@ -38,15 +38,15 @@ def batch_create_masks(input_arrays, target_length):
 
 from torch_geometric.data import Data
 
-# 对每一个事例
+# For each instance
 def build_custom_edge_index(data, dist_threshold, time_threshold):
     num_nodes = len(data)
     edge_index = []
 
     for i in range(num_nodes):
         for j in range(num_nodes):
-            if i != j:  # 排除自环
-                # 计算欧几里得距离和时间差
+            if i != j:  # Exclude self-loops
+                # Calculate the Euclidean distance and time difference
                 distance = np.linalg.norm(data[i][0:3] - data[j][0:3])
                 time_diff = abs(data[i][3] - data[j][3])
                 if distance < dist_threshold and time_diff < time_threshold:
@@ -60,7 +60,7 @@ def Data_loader_GNN(data, data_R):
     for i in range (d_length):
         node_features1 = torch.tensor(data['data'][i], dtype=torch.float)
         edge_index1 = build_custom_edge_index(data['data'][i], dist_threshold, time_threshold)
-        y1 = data_R[i] # 粒子能量 R
+        y1 = data_R[i] # Particle energy R
         dataset.append(Data(x=node_features1, edge_index=edge_index1, y=y1))
     return dataset
 

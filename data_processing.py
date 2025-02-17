@@ -1,12 +1,12 @@
 import numpy as np
 
-# 读出代码：
+# reading npz file：
 def read_npz(file):
     loaded_data = np.load(file, allow_pickle=True)
     keys = loaded_data['keys']
     values = loaded_data['values']
     
-    # 将数组转换回字典
+    # Convert the array back to a dictionary
     load_data = {k: v for k, v in zip(keys, values)}
     return load_data
 
